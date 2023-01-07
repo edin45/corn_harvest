@@ -12,18 +12,26 @@ public class camera_follow : MonoBehaviour
 
     public Vector3 m_camera_offset;
 
+
     void Start()
     {
         
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
-        Vector3 smooth_pos = Vector3.Lerp(transform.position, m_player_transform.position + m_camera_offset, m_snapping_speed);
+        //Vector3 desired_tranform = new Vector3();
+        //if(m_player_transform.)
+        //{
+        //    desired_tranform = m_player_transform.position + m_camera_offset;
+        //}
+        
+        Vector3 smooth_pos = Vector3.Lerp(transform.position, m_player_transform.position + m_camera_offset, m_snapping_speed * Time.deltaTime);
 
         transform.position = smooth_pos;
 
-        transform.LookAt(m_player_transform);
+        //transform.LookAt(m_player_transform);
+
     }
 }
