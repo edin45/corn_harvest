@@ -29,7 +29,7 @@ public class camera_follow : MonoBehaviour
         
         Vector3 smooth_pos = Vector3.Lerp(transform.position, m_player_transform.position + m_camera_offset, m_snapping_speed * Time.deltaTime);
 
-        transform.position = smooth_pos;
+        transform.position = m_player_transform.position + m_camera_offset;
 
         //transform.LookAt(m_player_transform);
 

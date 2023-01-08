@@ -28,54 +28,37 @@ public class camera_controlled_controls : MonoBehaviour
 
         if (Input.GetKey("up"))
         {
-            m_movement_velocity = m_camera_parent_transform.forward * m_speed * Time.deltaTime;
-        }
-
-        if (Input.GetKey("down"))
-        {
-            m_movement_velocity += new Vector3(0f, 0f, 0f - (m_speed * Time.deltaTime));
+            m_movement_velocity = m_camera_parent_transform.forward * m_speed;
         }
 
         if (Input.GetKey("right"))
         {
-            m_camera_parent_transform.Rotate(0f, m_rotation_speed, 0f);
-            transform.Rotate(0f, m_rotation_speed, 0f);
+            m_camera_parent_transform.Rotate(0f, m_rotation_speed * Time.deltaTime, 0f);
+            //transform.Rotate(m_camera_parent_transform.up * m_rotation_speed * Time.deltaTime);
+            //m_camera_parent_transform.Rotate(0f, m_rotation_speed * Time.deltaTime, 0f);
+            //transform.Rotate(0f, m_rotation_speed, 0f);
         }
 
         if (Input.GetKey("left"))
         {
-            m_camera_parent_transform.Rotate(0f, 0f - m_rotation_speed, 0f);
-            transform.Rotate(0f, 0f - m_rotation_speed, 0f);
+            m_camera_parent_transform.Rotate(0f, 0f - (m_rotation_speed * Time.deltaTime), 0f);
+            //transform.Rotate(0f, 0f - m_rotation_speed, 0f);
+            //transform.Rotate(new Vector3(0f,0f,0f) - (m_camera_parent_transform.up * m_rotation_speed * Time.deltaTime));
         }
+
+        Debug.Log(is_on_ground);
 
         if (Input.GetKeyDown("space") && is_on_ground)
         {
-            m_jump_velocity = new Vector3(0f, m_jump_strength, 0f);
+            m_jump_velocity = m_camera_parent_transform.up * m_jump_strength;// new Vector3(0f, m_jump_strength, 0f);
         }
 
-        if (m_jump_velocity != Vector3.zero)
-        {
-            m_player_rb.AddForce(m_jump_velocity);
-            m_jump_velocity *= m_movement_builddown_factor * Time.deltaTime;
-            Debug.Log(m_jump_velocity.y);
-            if (m_jump_velocity.y < 0.05f)
-            {
-                m_jump_velocity = Vector3.zero;
-            }
-        }
-
-        Vector3 smoothed_movement = Vector3.Lerp(m_player_rb.velocity, m_movement_velocity, m_movement_smoothness);
+        Vector3 smoothed_movement = Vector3.Lerp(m_player_rb.velocity, m_movement_velocity + m_jump_velocity, m_movement_smoothness * Time.deltaTime);
 
         m_player_rb.velocity = smoothed_movement;
 
-        if (m_movement_velocity != Vector3.zero)
-        {
-            m_movement_velocity *= m_movement_builddown_factor * Time.deltaTime;
-            if (m_movement_velocity.x < 0.05f && m_movement_velocity.y < 0.05f && m_movement_velocity.z < 0.05f)
-            {
-                m_jump_velocity = Vector3.zero;
-            }
-        }
+        m_jump_velocity *= m_movement_builddown_factor / Time.deltaTime;
+        m_movement_velocity *= (m_movement_builddown_factor / Time.deltaTime);
     }
 
     private void OnCollisionStay(Collision collision)
