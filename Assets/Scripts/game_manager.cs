@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class game_manager : MonoBehaviour
 {
@@ -23,5 +24,10 @@ public class game_manager : MonoBehaviour
             Destroy(mice[i]);
         }
         FindObjectOfType<mice_spawner>().enabled = false;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

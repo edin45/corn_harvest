@@ -14,6 +14,6 @@ public class button_scripts : MonoBehaviour
 
     public static void quit_game()
     {
-
+        Application.Quit();
     }
 }
