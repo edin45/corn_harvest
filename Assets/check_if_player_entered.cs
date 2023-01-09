@@ -21,6 +21,12 @@ public class check_if_player_entered : MonoBehaviour
         if(other.tag == "Player")
         {
             FindObjectOfType<game_manager>().WinGame();
+            GameObject[] mice = GameObject.FindGameObjectsWithTag("mice");
+            for(int i = 0;i<mice.Length;i++)
+            {
+                Destroy(mice[i]);
+            }
+            FindObjectOfType<mice_spawner>().enabled = false;
         }
     }
 }

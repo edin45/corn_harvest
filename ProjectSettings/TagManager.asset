@@ -9,6 +9,8 @@ TagManager:
   - attack_enemy
   - tractor_goal
   - goal
+  - mice
+  - mice_not_harmful
   layers:
   - Default
   - TransparentFX

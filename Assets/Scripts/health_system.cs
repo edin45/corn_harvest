@@ -10,9 +10,11 @@ public class health_system : MonoBehaviour
     public int m_total_health = 5;
     public Text m_health_display_text;
     public Image m_health_bar_fill;
+    public GameObject m_health_flash;
     public bool m_destory_object_on_zero_health = false;
     public bool m_game_over_on_zero_energy = true;
 
+   
 
     private int _current_health;
 
@@ -20,9 +22,17 @@ public class health_system : MonoBehaviour
     void Start()
     {
 
+        
+        //m_health_display_text.text = _current_health.ToString();
+    }
+
+    private void Awake()
+    {
+
         _current_health = m_total_health;
         update_health_bar();
-        m_health_display_text.text = _current_health.ToString();
+        
+
     }
 
     // Update is called once per frame
@@ -51,8 +61,26 @@ public class health_system : MonoBehaviour
                 update_health_bar();
             }
 
+            if(m_health_flash != null)
+            {
+
+                StartCoroutine(health_flash());
+
+            }
+
             check_death();
         }
+    }
+
+    IEnumerator health_flash()
+    {
+
+        Debug.Log("health_flash");
+        m_health_flash.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        m_health_flash.SetActive(false);
     }
 
     void check_death()
@@ -66,6 +94,8 @@ public class health_system : MonoBehaviour
 
             if (m_destory_object_on_zero_health)
             {
+                Debug.Log("death");
+                FindObjectOfType<game_manager>().m_mice_in_existance_currently--;
                 Destroy(gameObject);
             }
         }
